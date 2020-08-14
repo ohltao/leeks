@@ -1,0 +1,19 @@
+<idea-plugin>
+    <id>com.ltao.leeks</id>
+    <name>Leeks</name>
+    <vendor email="ltao@gmail.com" url="http://github.com/godltao">ltao</vendor>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <toolWindow anchor="left" id="leeks" factoryClass="com.leeks.window.FundWindow"/>
+        <applicationConfigurable id="leeks_settings" instance="com.leeks.window.SettingsWindow"/>
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+    </actions>
+</idea-plugin>
