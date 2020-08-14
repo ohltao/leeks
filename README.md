@@ -12,23 +12,15 @@ double shift，连按两下shift，输入leeks，找到toolWindow，打开以后
 每次修改，添加基金,股票，都需要点refresh按钮(fund窗口的按钮，同时刷新股票和基金)或者重启IDEA。  
 基金更新频率一分钟一次，股票10s一次
 
-![da](https://github.com/huage2580/leeks/blob/master/TIM%E6%88%AA%E5%9B%BE20200715180137.jpg)
-![dd](https://github.com/huage2580/leeks/blob/master/TIM%E6%88%AA%E5%9B%BE20200715180157.jpg)
 
 ## change  
-- v1.1   
+- 基于基于 https://github.com/huage2580/leeks v1.4.2  修改 
 增加了股票的tab，采用腾讯的行情接口，股票轮询间隔10s  
-- v1.2   
 支持了港股和美股 示例代码：（sh000001,sh600519,sz000001,hk00700,usAAPL）代码一般可以在各网页端看得到  
-- v1.3    
-插件由小韭菜更名为Leeks
-支持了IDEA 2020.1.3,兼容到`IDEA 2017.3`，修复macOS 行高问题（不确定  
-- v1.4.1   
+支持了IDEA 2020.1.3,兼容到`IDEA 2017.3`，修复macOS 行高问题（不确定     
 增加了隐蔽模式（全拼音和无色涨跌幅
-- v1.4.2  
 支持到IDEA 2020.2.*
 - v1.8.8
-基于 https://github.com/huage2580/leeks 修改
 重构基金和股票抓取逻辑、
 将股票腾讯api修改为新浪api
 重构自动刷新机制
