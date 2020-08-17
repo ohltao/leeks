@@ -64,8 +64,6 @@ public class SinaStockRefreshHandler extends StockRefreshHandler {
             bean.setTime(values[31]);
             beans.add(bean);
         }
-
-        LogUtil.info("stock size " + beans.size());
         return beans;
     }
 }

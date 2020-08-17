@@ -40,8 +40,6 @@ public class TianTianFundRefreshHandler extends FundRefreshHandler {
                 })
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-
-        LogUtil.info("found size " + beans.size());
         updateUI(beans);
     }
 }
