@@ -6,6 +6,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import com.leeks.handler.FundRefreshHandler;
 import com.leeks.utils.LogUtil;
@@ -68,7 +69,7 @@ public class FundWindow implements ToolWindowFactory {
     private List<String> loadFunds() {
         ArrayList<String> temp = new ArrayList<>();
         String value = PropertiesComponent.getInstance().getValue("key_funds");
-        if (value == null) {
+        if (StringUtils.isBlank(value)) {
             return temp;
         }
         String[] codes = value.split("[,，]");
