@@ -11,6 +11,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -21,6 +22,8 @@ public abstract class RefreshHandler {
     protected JTable table;
     private boolean scheduleFlag = false;
     private ScheduledFuture<?> scheduledFuture;
+    private final List<String> codeList = new ArrayList<>();
+
 
     RefreshHandler(JTable table) {
         this.table = table;
@@ -42,12 +45,14 @@ public abstract class RefreshHandler {
 
     protected void handle(List<String> codes, ActionLogic actionLogic, int period) {
 
+        codeList.clear();
+        codeList.addAll(codes);
         if (CollectionUtils.isEmpty(codes)) {
             return;
         }
         if (TimeUtil.checkTime()) {
             if (!scheduleFlag) {
-                scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(() -> actionLogic.action(codes), 0, period, TimeUnit.SECONDS);
+                scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(() -> actionLogic.action(codeList), 0, period, TimeUnit.SECONDS);
                 scheduleFlag = true;
             }
         } else {

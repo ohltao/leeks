@@ -52,6 +52,9 @@ public class SinaStockRefreshHandler extends StockRefreshHandler {
                 continue;
             }
             String[] values = split[1].split(",");
+            if (values.length < 4) {
+                continue;
+            }
             String code = split[0].substring(split[0].lastIndexOf("_"));
             StockBean bean = new StockBean(code);
             bean.setCode(code);
