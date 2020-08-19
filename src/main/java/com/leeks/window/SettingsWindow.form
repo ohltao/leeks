@@ -10,7 +10,7 @@
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:d:grow"/>
     <constraints>
-      <xy x="20" y="20" width="512" height="400"/>
+      <xy x="20" y="20" width="531" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -22,7 +22,7 @@
         </constraints>
         <properties>
           <font size="14"/>
-          <text value="输入基金编码，英文逗号分隔："/>
+          <text value="基金编码，逗号分隔："/>
         </properties>
       </component>
       <component id="13115" class="javax.swing.JTextField" binding="textField1" default-binding="true">
@@ -41,7 +41,7 @@
         </constraints>
         <properties>
           <font size="14"/>
-          <text value="输入股票编码，逗号分隔："/>
+          <text value="股票代码:成本(optional)，逗号分隔：(eg sz10000:18)"/>
         </properties>
       </component>
       <component id="adb96" class="javax.swing.JTextField" binding="textField2" default-binding="true">

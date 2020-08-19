@@ -3,15 +3,17 @@ package com.leeks.handler;
 import com.leeks.bean.StockBean;
 import com.leeks.utils.HttpClientPool;
 import com.leeks.utils.LogUtil;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class SinaStockRefreshHandler extends StockRefreshHandler {
 
     private JLabel label;
+    private final Map<String, String> costMapping = new HashMap<>();
 
     public SinaStockRefreshHandler(JTable table, JLabel label) {
         super(table);
@@ -20,11 +22,12 @@ public class SinaStockRefreshHandler extends StockRefreshHandler {
 
     @Override
     public void handle(List<String> codes) {
+        packingCode(codes);
         LogUtil.info("Leeks update stock data.");
-        handle(codes, this::stepAction, 5);
+        handle(costMapping.keySet(), this::stepAction, 5);
     }
 
-    private void stepAction(List<String> codes) {
+    private void stepAction(Collection<String> codes) {
         StringBuilder stringBuffer = new StringBuilder();
         for (String code : codes) {
             stringBuffer.append(code.trim()).append(",");
@@ -38,6 +41,19 @@ public class SinaStockRefreshHandler extends StockRefreshHandler {
         } catch (Exception e) {
             LogUtil.info(e.getMessage());
         }
+    }
+
+    private void packingCode(List<String> originCodes) {
+        if (CollectionUtils.isEmpty(originCodes)) {
+            return;
+        }
+        costMapping.clear();
+        originCodes.stream()
+                .filter(StringUtils::isNotBlank)
+                .forEach(code -> {
+                    String[] split = code.split("[:：]");
+                    costMapping.put(split[0], split.length > 1 ? split[1] : null);
+                });
     }
 
     private List<StockBean> parse(String result) {
@@ -55,15 +71,26 @@ public class SinaStockRefreshHandler extends StockRefreshHandler {
             if (values.length < 4) {
                 continue;
             }
-            String code = split[0].substring(split[0].lastIndexOf("_"));
+            String code = split[0].substring(split[0].lastIndexOf("_") + 1);
+            double now = Double.parseDouble(values[3]);
+            double yesterday = Double.parseDouble(values[2]);
             StockBean bean = new StockBean(code);
             bean.setCode(code);
             bean.setName(values[0]);
-            bean.setNow(String.format("%.2f", Double.parseDouble(values[3])));
+            String cost = costMapping.get(code);
+            if (StringUtils.isNotBlank(cost)) {
+                bean.setCost(costMapping.get(code));
+                double cost_d = Double.parseDouble(cost);
+                bean.setG_or_l(String.format("%.2f", (now - cost_d) / cost_d * 100) + "%");
+            } else {
+                bean.setCost("--");
+                bean.setG_or_l("--");
+            }
+            bean.setNow(String.format("%.2f", now));
             bean.setLow(String.format("%.2f", Double.parseDouble(values[5])));
             bean.setHigh(String.format("%.2f", Double.parseDouble(values[4])));
-            bean.setChange(String.format("%.2f", Double.parseDouble(values[3]) - Double.parseDouble(values[2])));
-            bean.setChangePercent(String.format("%.2f", (Double.parseDouble(values[3]) - Double.parseDouble(values[2])) / Double.parseDouble(values[2]) * 100) + "%");
+            bean.setChange(String.format("%.2f", now - yesterday));
+            bean.setChangePercent(String.format("%.2f", (now - yesterday) / yesterday * 100) + "%");
             bean.setTime(values[31]);
             beans.add(bean);
         }

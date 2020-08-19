@@ -12,7 +12,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.*;
 
 public abstract class RefreshHandler {
@@ -43,7 +45,7 @@ public abstract class RefreshHandler {
 
     protected ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(3);
 
-    protected void handle(List<String> codes, ActionLogic actionLogic, int period) {
+    protected void handle(Collection<String> codes, ActionLogic actionLogic, int period) {
 
         codeList.clear();
         codeList.addAll(codes);
@@ -78,28 +80,15 @@ public abstract class RefreshHandler {
         table.getColumn(table.getColumnName(colorColumn)).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                double temp = 0.0;
-                try {
-                    String s = value.toString().substring(0, value.toString().length() - 1);
-                    temp = Double.parseDouble(s);
-                } catch (Exception e) {
-                    LogUtil.info(e.getMessage());
-                }
-                Color orgin = getForeground();
-                if (temp > 0) {
-                    if (colorful) {
-                        setForeground(JBColor.RED);
-                    } else {
-                        setForeground(JBColor.DARK_GRAY);
-                    }
-                } else if (temp < 0) {
-                    if (colorful) {
+                if (colorful) {
+                    boolean negative = value.toString().startsWith("-");
+                    if (negative) {
                         setForeground(JBColor.GREEN);
                     } else {
-                        setForeground(JBColor.GRAY);
+                        setForeground(JBColor.RED);
                     }
-                } else if (temp == 0) {
-                    setForeground(orgin);
+                } else {
+                    setForeground(getForeground());
                 }
                 return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
             }
@@ -131,7 +120,6 @@ public abstract class RefreshHandler {
             table.setModel(model);
             updateColors(colorColumn);
             resizeTable();
-
         });
     }
 }

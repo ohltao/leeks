@@ -7,6 +7,7 @@ import com.leeks.utils.LogUtil;
 import org.apache.commons.lang.StringUtils;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public class TianTianFundRefreshHandler extends FundRefreshHandler {
         handle(codes, this::stepAction, 30);
     }
 
-    private void stepAction(List<String> codes) {
+    private void stepAction(Collection<String> codes) {
         List<FundBean> beans = codes.parallelStream()
                 .map(String::trim)
                 .map(code -> {

@@ -6,6 +6,8 @@ public class StockBean {
     private String code;
     private String name;
     private String now;
+    private String cost;
+    private String g_or_l;
     private String low;
     private String high;
     private String change;//涨跌
@@ -18,6 +20,22 @@ public class StockBean {
     public StockBean(String code) {
         this.code = code;
         this.name = "--";
+    }
+
+    public String getCost() {
+        return cost;
+    }
+
+    public void setCost(String cost) {
+        this.cost = cost;
+    }
+
+    public String getG_or_l() {
+        return g_or_l;
+    }
+
+    public void setG_or_l(String g_or_l) {
+        this.g_or_l = g_or_l;
     }
 
     public String getCode() {

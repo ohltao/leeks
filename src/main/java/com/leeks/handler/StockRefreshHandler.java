@@ -28,7 +28,7 @@ public abstract class StockRefreshHandler extends RefreshHandler {
      * 更新全部数据
      */
     public void updateUI(List<StockBean> beans) {
-        String[] columnNames = {"股票名称", "当前价", "涨跌", "涨跌幅", "最低价", "最高价", "更新时间"};
+        String[] columnNames = {"名称", "当前价", "涨跌幅", "盈亏幅", "涨跌", "成本", "最低价", "最高价", "更新时间"};
         updateUI(columnNames, 3, convertData(beans));
     }
 
@@ -39,8 +39,10 @@ public abstract class StockRefreshHandler extends RefreshHandler {
             temp[i] = new Object[]{
                     colorful ? fundBean.getName() : PinYinUtils.toPinYin(fundBean.getName()) + " (" + fundBean.getCode() + ")",
                     fundBean.getNow(),
-                    fundBean.getChange(),
                     fundBean.getChangePercent(),
+                    fundBean.getG_or_l(),
+                    fundBean.getChange(),
+                    fundBean.getCost(),
                     fundBean.getLow(),
                     fundBean.getHigh(),
                     fundBean.getTime()};
