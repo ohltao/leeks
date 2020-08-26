@@ -24,7 +24,7 @@ public abstract class RefreshHandler {
     protected JTable table;
     private boolean scheduleFlag = false;
     private ScheduledFuture<?> scheduledFuture;
-    private final List<String> codeList = new ArrayList<>();
+    private final List<String> codeList = new CopyOnWriteArrayList<>();
 
 
     RefreshHandler(JTable table) {
